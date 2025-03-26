@@ -1,6 +1,6 @@
 import { Text, View } from "react-native-ui-lib";
 
-export default function history () {
+export default function History () {
     return(
         <View>
             <Text>
