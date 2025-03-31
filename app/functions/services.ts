@@ -1,6 +1,6 @@
 import { createApi , fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-interface Products {
+export interface Products {
   barcode:string,
   name:string,
   description:string,
@@ -10,15 +10,15 @@ interface Products {
 
 export const dataApi = createApi({
   reducerPath: 'dataApi',
-  baseQuery: fetchBaseQuery({ baseUrl:'https://c6b9-2806-2f0-a320-f5bd-d42c-ec7-597c-67eb.ngrok-free.app/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl:'http://192.168.106.195:8080/api/products' }),
   endpoints: (build) => ({
-    getInventoryByCode: build.query<{name:string,stock:number,bar_code:string}, string>({
-      query: (code) => `codeBar/${code}`,
+    getProductByCode: build.query<Products[], string>({
+      query: (code) => `/${code}`,
     }),
     getAllProducts: build.query<Products[],void>({
-      query: () => "/products?detail=2",
+      query: () => "?detail=2",
     })
   }),
 })
 
-export const { useGetAllProductsQuery , useGetInventoryByCodeQuery } = dataApi
+export const { useGetAllProductsQuery , useGetProductByCodeQuery } = dataApi
