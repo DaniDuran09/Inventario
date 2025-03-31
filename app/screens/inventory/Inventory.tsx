@@ -21,7 +21,7 @@ function InventoryComponent() {
   if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
   if (error)
     return (
-      <View flex center>
+      <View flex center >
         <LottieView
         style={{width:'100%',height:'40%'}}
         source={require("../../../assets/animations/errorNotFound.json")}
@@ -33,7 +33,7 @@ function InventoryComponent() {
       </View>
     );
   return (
-    <View flex bg-white>
+    <View flex bg-white paddingH-10>
       <FlashList
         ListEmptyComponent={
           <View center width={widthScreen} height={heightScreen / 1.3}>
@@ -47,7 +47,7 @@ function InventoryComponent() {
             <Text text70>Comienza a agregar productos </Text>
           </View>
         }
-        data={""}
+        data={data}
         renderItem={({ item }) => (
           <View style={{ width: "100%", height: 100 }} marginT-10 bg-grey50 row>
             <View flex padding-10>
