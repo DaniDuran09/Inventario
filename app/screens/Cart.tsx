@@ -1,22 +1,46 @@
 import { Colors, Icon, Text, View } from "react-native-ui-lib";
 import { CameraView } from "expo-camera";
 import {
+  ActivityIndicator,
   FlatList,
   Linking,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCamera from "@/hooks/UseCamera";
-import { useGetAllProductsQuery, useGetInventoryByCodeQuery } from "../functions/services";
+import { Products, useGetAllProductsQuery,useGetProductByCodeQuery } from "../functions/services";
 import { Provider } from "react-redux";
 import { store } from "@/configureStore";
 
 function CartComponent() {
   const { permission: cameraPermissions } = useCamera();
-  const [carData, setCarData] = useState([]);
-  const { data: inventoryData } = useGetAllProductsQuery();
+  const [carData, setCarData] = useState<Products[]>([]);
+  const [qrCode, setQrCode] = useState<string>("");
+  const [lastScanned, setLastScanned] = useState<string | null>(null);
+
+  const { data, error, isLoading } = useGetProductByCodeQuery(qrCode, { skip: !qrCode });
+
+  useEffect(() => {
+    console.log('data : cardata',carData)
+    if (data) {
+      setCarData((prev) => [...prev,data]);
+      console.log("Producto agregado:", carData);
+    }
+  }, [data]);
+
+  if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
+
+  if (error) {
+    console.log("ERROR : : :", error);
+  }
+
+  const handleQrScan = (scannedData: string) => {
+    if (scannedData === lastScanned) return;
+    setLastScanned(scannedData);
+    setQrCode(scannedData);
+  };
 
   if (!cameraPermissions?.granted) {
     return (
@@ -27,13 +51,17 @@ function CartComponent() {
   }
 
   return (
-    <View flex center>
+    <View  center flex>
       <CameraView
         style={{ width: "100%", height: "30%" }}
         barcodeScannerSettings={{
-          barcodeTypes: ["ean13", "ean8", "code39", "code128",'qr'],
+          barcodeTypes: ["ean13", "ean8", "code39", "code128", "qr"],
         }}
-        onBarcodeScanned={(data)=> console.log(data.data)}
+        onBarcodeScanned={({ data }) => {
+          if (data.length > 0) {
+            handleQrScan(data);
+          }
+        }}
       />
       <ScrollView style={{ width: "100%" }}>
         <FlatList
@@ -58,12 +86,6 @@ function CartComponent() {
           keyExtractor={(item) => item.qr}
         />
       </ScrollView>
-      <View style={{ width: "110%", height: 50 }} bg-blue40 center>
-        <Text text60 white>
-          {//TOTAL: ${total
-          }
-        </Text>
-      </View>
     </View>
   );
 }
