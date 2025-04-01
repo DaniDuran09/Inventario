@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import useCamera from "@/hooks/UseCamera";
-import { Products, useGetAllProductsQuery,useGetProductByCodeQuery } from "../functions/services";
+import { Products, useGetAllProductsQuery,useGetProductByCodeQuery } from "../../functions/services";
 import { Provider } from "react-redux";
 import { store } from "@/configureStore";
 

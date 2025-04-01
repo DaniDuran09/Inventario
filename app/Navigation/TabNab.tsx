@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MyStack from "./Navigation/myStack";
+import MyStack from "./MyStack";
 import { Colors } from "react-native-ui-lib";
-import Cart from "./screens/Cart";
-import Settings from "./screens/Settings";
-import History from "./screens/History";
+import Cart from "../screens/navigation/Cart";
+import Settings from "../screens/navigation/Settings";
+import History from "../screens/navigation/History";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 
-export default function index() {
+export default function TabNab() {
   const Tab = createBottomTabNavigator();
 
   return (
