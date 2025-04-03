@@ -15,13 +15,13 @@ export default function Login() {
         bg-white
         padding-30
         width={widthScreen - 50}
-        height={heightScreen / 2}
+        height={heightScreen /2}
         br50
       >
         <View center marginB-50>
           <Text text40>INICIA SESIÓN</Text>
         </View>
-        <View flex centerH>
+        <View flex >
           <Text text50>CORREO</Text>
           <TextInput
             style={{
