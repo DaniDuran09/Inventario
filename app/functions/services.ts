@@ -10,14 +10,14 @@ export interface Products {
 
 export const dataApi = createApi({
   reducerPath: 'dataApi',
-  baseQuery: fetchBaseQuery({ baseUrl:'http://192.168.106.195:8080/api/products' }),
+  baseQuery: fetchBaseQuery({ baseUrl:'http://192.168.105.212:8080/api' }),
   endpoints: (build) => ({
     getProductByCode: build.query<Products[], string>({
-      query: (code) => `/${code}`,
+      query: (code) => `/products/barcode/${code}`,
     }),
     getAllProducts: build.query<Products[],void>({
-      query: () => "?detail=2",
-    })
+      query: () => "/products",
+    })  
   }),
 })
 

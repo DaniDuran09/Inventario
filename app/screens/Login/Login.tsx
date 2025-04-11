@@ -4,8 +4,8 @@ import { Dimensions, TextInput, TouchableOpacity } from "react-native";
 import { Colors, Text, View } from "react-native-ui-lib";
 
 export default function Login() {
-  const heightScreen = Dimensions.get("screen").height;
-  const widthScreen = Dimensions.get("screen").width;
+  const heightScreen = Dimensions.get("window").height;
+  const widthScreen = Dimensions.get("window").width;
 
   const navigation = useNavigation()
 
@@ -14,7 +14,7 @@ export default function Login() {
       <View
         bg-white
         padding-30
-        width={widthScreen - 50}
+        width={widthScreen -50}
         height={heightScreen /2}
         br50
       >

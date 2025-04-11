@@ -12,15 +12,11 @@ export default function TabNab() {
   return (
     <Tab.Navigator initialRouteName="scanner" screenOptions={{
       tabBarStyle: {
-        position:'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: Colors.blue40,
-        borderTopLeftRadius: 20,
+        borderColor:'black',
+        borderWidth:1,
+        backgroundColor: Colors.white,
         height:'7%',
-        paddingHorizontal:5,
-        borderTopRightRadius: 20,
+        paddingTop:10,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.1,
@@ -34,7 +30,7 @@ export default function TabNab() {
           headerShown: false,
           title: "CARRITO",
           tabBarIcon: ({color})=> <FontAwesome  name="shopping-cart" color={color} size={30} />,
-          tabBarActiveTintColor: Colors.white,
+          tabBarActiveTintColor: Colors.blue40,
           tabBarInactiveTintColor:Colors.grey10
         }}
       />
@@ -43,21 +39,21 @@ export default function TabNab() {
         component={History}
         options={{ headerShown: false, title: "HISTORIAL",
         tabBarIcon: ({color})=> <FontAwesome  name="history" color={color} size={30} />,
-        tabBarActiveTintColor: Colors.white,
+        tabBarActiveTintColor: Colors.blue40,
         tabBarInactiveTintColor:Colors.grey10 }}
       />
       <Tab.Screen
         name="Inventario"
         component={MyStack}
         options={{ headerShown: false, title: "INVENTARIO" ,tabBarIcon: ({color})=> <FontAwesome  name="list" color={color} size={30} />,
-        tabBarActiveTintColor: Colors.white,
+        tabBarActiveTintColor: Colors.blue40,
         tabBarInactiveTintColor:Colors.grey10}} 
       />
       <Tab.Screen
         name="Perfil"
         component={Settings}
         options={{ headerShown: false, title: "CONFIGURACIÓN" ,tabBarIcon: ({color})=> <Ionicons  name="settings" color={color} size={30} />,
-        tabBarActiveTintColor: Colors.white,
+        tabBarActiveTintColor: Colors.blue40,
         tabBarInactiveTintColor:Colors.grey10}}
       />
     </Tab.Navigator>

@@ -33,7 +33,13 @@ function InventoryComponent() {
       </View>
     );
   return (
-    <View flex bg-white paddingH-10>
+    <View flex bg-white bg-grey50>
+      <View style={{width:'100%',height:'auto'}} bg-blue40 paddingT-30 paddingH-10>
+        <Text text50 white  >Inventario</Text>
+        <View flex bg-red10>
+          <Text>Hola</Text>
+        </View>
+      </View>
       <FlashList
         ListEmptyComponent={
           <View center width={widthScreen} height={heightScreen / 1.3}>
@@ -49,10 +55,10 @@ function InventoryComponent() {
         }
         data={data}
         renderItem={({ item }) => (
-          <View style={{ width: "100%", height: 100 }} marginT-10 bg-grey50 row>
+          <View style={{ width: "95%", height: 80  }} marginT-10 bg-white row br50 marginH-10 >
             <View flex padding-10>
               <View flex centerV>
-                <Text text60>{item.name}</Text>
+                <Text text50>{item.name}</Text>
               </View>
               <View flex centerV>
                 <Text blue40 text60>
@@ -68,16 +74,14 @@ function InventoryComponent() {
             <View style={{ width: "20%" }} center>
               <TouchableOpacity
                 style={{
-                  backgroundColor: Colors.blue30,
                   width: "100%",
-                  height: "80%",
                   justifyContent: "center",
                   alignItems: "center",
                   marginRight: 20,
                 }}
               >
                 <Text text60 white>
-                  EDITAR
+                  . . .
                 </Text>
               </TouchableOpacity>
             </View>
