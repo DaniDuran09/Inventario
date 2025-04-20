@@ -18,6 +18,8 @@ function InventoryComponent() {
 
   const { data, error, isLoading } = useGetAllProductsQuery();
 
+  const data2 = [{name:"Hola1",price:5,stock:5,color:'green'},{name:"Hola2",price:5,stock:5,color:'yellow'},{name:"Hola3",price:5,stock:5,color:'red'}]
+
   if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
   if (error)
     return (
@@ -34,10 +36,9 @@ function InventoryComponent() {
     );
   return (
     <View flex bg-white bg-grey50>
-      <View style={{width:'100%',height:'auto'}} bg-blue40 paddingT-30 paddingH-10>
-        <Text text50 white  >Inventario</Text>
-        <View flex bg-red10>
-          <Text>Hola</Text>
+      <View style={{width:'100%',height:'auto'}} bg-blue40 paddingT-30 paddingH-10 marginB-5>
+        <View flex bg-red10 width={10} height={10}>
+          <Text >Hola</Text>
         </View>
       </View>
       <FlashList
@@ -55,7 +56,7 @@ function InventoryComponent() {
         }
         data={data}
         renderItem={({ item }) => (
-          <View style={{ width: "95%", height: 80  }} marginT-10 bg-white row br50 marginH-10 >
+          <View style={{ width: "95%", height: 80  }} marginV-5 bg-white row br50 marginH-10 >
             <View flex padding-10>
               <View flex centerV>
                 <Text text50>{item.name}</Text>
@@ -67,8 +68,8 @@ function InventoryComponent() {
               </View>
             </View>
 
-            <View width={"40%"} centerH paddingT-10>
-              <View flex />
+            <View width={"40%"} centerH paddingT-10 >
+              <View  style={{backgroundColor:item.color}}  width={50} height={50} br100/>
               <Text flex>en stock {item.stock}</Text>
             </View>
             <View style={{ width: "20%" }} center>

@@ -1,23 +1,38 @@
-import { Text, View } from "react-native-ui-lib";
+import { Avatar, Text, View } from "react-native-ui-lib";
+import { getInitials } from "react-native-ui-lib/src/helpers/AvatarHelper";
+
 export default function Settings() {
+
   return (
     <View flex bg-white padding-20>
-      <View row br100 bg-blue50>
-        <View style={{width:70,height:70}} bg-black br100/>
-        <View flex centerV marginL-20>
-          <Text text50>HOLA </Text>
+      <View row>
+        <View flex centerV marginL-20 center>
+
           <Text text30>Daniel</Text>
         </View>
       </View>
-      <View  bg-grey50 br50>
-        <Text text50 marginT-40  >NOMBRE:</Text>
+      <View>
+        <View width={"100%"} height={1} bg-black marginT-20 />
+        <Text text70 marginT-20>
+          NOMBRE:
+        </Text>
         <Text text60>Daniel</Text>
-        <Text text50 marginT-20 >TELEFONO</Text>
+        <View width={"100%"} height={1} bg-black marginT-20 />
+        <Text text70 marginT-20>
+          TELEFONO
+        </Text>
         <Text text60>7771234567</Text>
-        <Text text50 marginT-20 >CORREO</Text>
+        <View width={"100%"} height={1} bg-black marginT-20 />
+        <Text text70 marginT-20>
+          CORREO
+        </Text>
         <Text text60>Daniel@gmail.com</Text>
-        <Text text50 marginT-20 >CONTRASEÑA</Text>
+        <View width={"100%"} height={1} bg-black marginT-20 />
+        <Text text70 marginT-20>
+          CONTRASEÑA
+        </Text>
         <Text text60>**********</Text>
+        <View width={"100%"} height={1} bg-black marginT-20 />
       </View>
     </View>
   );

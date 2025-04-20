@@ -51,7 +51,7 @@ function CartComponent() {
   }
 
   return (
-    <View  center flex>
+    <View  center flex bg-blue50>
       <CameraView
         style={{ width: "100%", height: "30%" }}
         barcodeScannerSettings={{
