@@ -6,41 +6,78 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { Colors, Text, View } from "react-native-ui-lib";
+import { Colors, Modal, Text, View } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import LottieView from "lottie-react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo , Octicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { TextInput } from "react-native";
 
 function InventoryComponent() {
+  const [modal, setModal] = useState(false);
   const heightScreen = Dimensions.get("window").height;
   const widthScreen = Dimensions.get("window").width;
 
+  const navigation = useNavigation();
+
   const { data, error, isLoading } = useGetAllProductsQuery();
 
-  const data2 = [{name:"Hola1",price:5,stock:5,color:'green'},{name:"Hola2",price:5,stock:5,color:'yellow'},{name:"Hola3",price:5,stock:5,color:'red'}]
+  const data2 = [
+    { name: "Hola1", price: 5, stock: 5, color: "green" },
+    { name: "Hola2", price: 5, stock: 5, color: "yellow" },
+    { name: "Hola3", price: 5, stock: 5, color: "red" },
+  ];
 
   if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
-  if (error)
+  if (!error)
     return (
-      <View flex center >
+      <View flex center>
         <LottieView
-        style={{width:'100%',height:'40%'}}
-        source={require("../../../assets/animations/errorNotFound.json")}
-        autoPlay
-        loop={true}
+          style={{ width: "100%", height: "40%" }}
+          source={require("../../../assets/animations/errorNotFound.json")}
+          autoPlay
+          loop={true}
         />
-        <Text text40 >HUBO UN ERROR</Text>
-        <Text text70 >Intenta de nuevo mas tarde</Text>
+        <Text text40>HUBO UN ERROR</Text>
+        <Text text70>Intenta de nuevo mas tarde</Text>
       </View>
     );
   return (
     <View flex bg-white bg-grey50>
-      <View style={{width:'100%',height:'auto'}} bg-blue40 paddingT-30 paddingH-10 marginB-5>
-        <View flex bg-red10 width={10} height={10}>
-          <Text >Hola</Text>
-        </View>
+      <View
+        style={{ width: "100%" }}
+        bg-blue40
+        paddingV-15
+        paddingH-10
+        marginB-5
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 10,
+          }}
+          row
+        >
+          <TextInput
+            style={{
+              height: 40,
+              fontSize: 16,
+              color: "#000",
+              paddingHorizontal: 10,
+              flex:1,
+            }}
+            placeholder="BUSCAR ..."
+            placeholderTextColor="#999"
+            // onChangeText={}
+          />
+          <TouchableOpacity>
+            <Octicons name="search" size={30} color="grey" style={{marginHorizontal:10}}/>
+          </TouchableOpacity>
+          </View>
       </View>
+
       <FlashList
         ListEmptyComponent={
           <View center width={widthScreen} height={heightScreen / 1.3}>
@@ -54,9 +91,16 @@ function InventoryComponent() {
             <Text text70>Comienza a agregar productos </Text>
           </View>
         }
-        data={data}
+        data={data2}
         renderItem={({ item }) => (
-          <View style={{ width: "95%", height: 80  }} marginV-5 bg-white row br50 marginH-10 >
+          <View
+            style={{ width: "95%", height: 80 }}
+            marginV-5
+            bg-white
+            row
+            br50
+            marginH-10
+          >
             <View flex padding-10>
               <View flex centerV>
                 <Text text50>{item.name}</Text>
@@ -68,8 +112,13 @@ function InventoryComponent() {
               </View>
             </View>
 
-            <View width={"40%"} centerH paddingT-10 >
-              <View  style={{backgroundColor:item.color}}  width={50} height={50} br100/>
+            <View width={"40%"} centerH paddingT-10>
+              <View
+                style={{ backgroundColor: item.color }}
+                width={50}
+                height={50}
+                br100
+              />
               <Text flex>en stock {item.stock}</Text>
             </View>
             <View style={{ width: "20%" }} center>
@@ -101,9 +150,11 @@ function InventoryComponent() {
           justifyContent: "center",
           alignItems: "center",
         }}
+        onPress={() => setModal(true)}
       >
         <Entypo name="add-to-list" size={30} color="white" />
       </TouchableOpacity>
+      
     </View>
   );
 }

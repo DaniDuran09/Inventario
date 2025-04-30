@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import { Dimensions, TextInput, TouchableOpacity } from "react-native";
 import { Colors, Text, View } from "react-native-ui-lib";
 
@@ -7,7 +7,21 @@ export default function Login() {
   const heightScreen = Dimensions.get("window").height;
   const widthScreen = Dimensions.get("window").width;
 
+  const [email, setEmail] = useState('');
+  const [password , setPassword] = useState('');
+  
+  const handleSubmit = () => {
+    console.log(email)
+    console.log(password)
+    if(email==''|| password==''){
+    }
+    else{
+      navigation.navigate('tabNab')
+    }
+  }
+
   const navigation = useNavigation()
+
 
   return (
       <View
@@ -27,6 +41,7 @@ export default function Login() {
               marginVertical:20,
             }}
             placeholder="Correo"
+            onChangeText={(texto) => setEmail(texto)}
 
           />
           <TextInput
@@ -35,9 +50,11 @@ export default function Login() {
               backgroundColor:'white',
               height:50,
             }}
+            onChangeText={(texto)=>setPassword(texto)}
           />
+
           <TouchableOpacity
-          onPress={()=>navigation.navigate('tabNab')}
+          onPress={()=>handleSubmit()}
             style={{
               backgroundColor: '#28303B',
               marginVertical: 50,
