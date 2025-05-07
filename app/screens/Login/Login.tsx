@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import { Provider } from "react-redux";
-import AsyncStorage  from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { checkTokenAndRedirect } from "@/app/functions/authUtils";
 import { store } from "@/configureStore";
+import { useLoginUserMutation } from "@/app/functions/services";
 
 function LoginComponent() {
   const heightScreen = Dimensions.get("window").height;
@@ -28,35 +29,30 @@ function LoginComponent() {
         "TODOS LOS CAMPOS SON OBLIGATORIOS",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
-      )
-      
-      
+      );
     } else {
       try {
-        const result = await loginUser({ username : userName, password:password }).unwrap();
+        const result = await loginUser({
+          username: userName,
+          password: password,
+        }).unwrap();
         console.log("accessToken : ", result);
-        const {accessToken} = result;
-        console.log(accessToken)
-       await AsyncStorage.setItem('accessToken',accessToken)
-      navigation.navigate("tabNab");
+        const { accessToken } = result;
+        console.log(accessToken);
+        await AsyncStorage.setItem("accessToken", accessToken);
+        navigation.navigate("tabNab");
       } catch (err) {
         console.log(err);
       }
     }
-    else{
-      navigation.navigate('tabNab')
-    }
-  }
+  };
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-
-
-  useEffect (()=>{
-    console.log('SE EJECUTA')
-    checkTokenAndRedirect(navigation,'tabNab')
-  },[])
-
+  useEffect(() => {
+    console.log("SE EJECUTA");
+    checkTokenAndRedirect(navigation, "tabNab");
+  }, []);
 
   return (
     <View bg-blue40 padding-30 flex>

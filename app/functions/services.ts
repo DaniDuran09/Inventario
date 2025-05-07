@@ -42,4 +42,4 @@ export interface Products {
     }),
   })
 
-export const { useGetAllProductsQuery , useGetProductByCodeQuery } = dataApi
+export const { useGetAllProductsQuery , useGetProductByCodeQuery , useLoginUserMutation} = dataApi
