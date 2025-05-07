@@ -14,6 +14,7 @@ import { Products, useGetAllProductsQuery,useGetProductByCodeQuery } from "../..
 import { Provider } from "react-redux";
 import { store } from "@/configureStore";
 import { Dimensions } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;

@@ -1,4 +1,4 @@
-import { useGetAllProductsQuery } from "@/app/functions/services";
+import { useGetAllProductsQuery, useGetProductByCodeQuery } from "@/app/functions/services";
 import { store } from "@/configureStore";
 import {
   ActivityIndicator,
@@ -10,28 +10,38 @@ import { Colors, Modal, Text, View } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import LottieView from "lottie-react-native";
-import { Entypo , Octicons } from "@expo/vector-icons";
+import { Entypo, Octicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput } from "react-native";
 
 function InventoryComponent() {
   const [modal, setModal] = useState(false);
+  const [product, setProduct] = useState(''); 
+  const [search , setSearch] = useState(false)
+
   const heightScreen = Dimensions.get("window").height;
   const widthScreen = Dimensions.get("window").width;
 
   const navigation = useNavigation();
 
   const { data, error, isLoading } = useGetAllProductsQuery();
+  /*const { data  } = useGetProductByCodeQuery(product,{skip:!product})
 
-  const data2 = [
+  useEffect(()=>{
+    
+  },[search])
+*/
+  /*const data2 = [
     { name: "Hola1", price: 5, stock: 5, color: "green" },
     { name: "Hola2", price: 5, stock: 5, color: "yellow" },
     { name: "Hola3", price: 5, stock: 5, color: "red" },
-  ];
+  ];*/
 
   if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
-  if (!error)
+
+  if (error) {
+    console.log(error);
     return (
       <View flex center>
         <LottieView
@@ -44,6 +54,7 @@ function InventoryComponent() {
         <Text text70>Intenta de nuevo mas tarde</Text>
       </View>
     );
+  }
   return (
     <View flex bg-white bg-grey50>
       <View
@@ -66,16 +77,23 @@ function InventoryComponent() {
               fontSize: 16,
               color: "#000",
               paddingHorizontal: 10,
-              flex:1,
+              flex: 1,
             }}
             placeholder="BUSCAR ..."
             placeholderTextColor="#999"
-            // onChangeText={}
+            onChangeText={(text)=> search? '' : setProduct(text)}
           />
-          <TouchableOpacity>
-            <Octicons name="search" size={30} color="grey" style={{marginHorizontal:10}}/>
+          <TouchableOpacity
+          onPress={()=>setSearch(true)}
+          >
+            <Octicons
+              name="search"
+              size={30}
+              color="grey"
+              style={{ marginHorizontal: 10 }}
+            />
           </TouchableOpacity>
-          </View>
+        </View>
       </View>
 
       <FlashList
@@ -113,12 +131,12 @@ function InventoryComponent() {
             </View>
 
             <View width={"40%"} centerH paddingT-10>
-              <View
+              {/*<View
                 style={{ backgroundColor: item.color }}
                 width={50}
                 height={50}
                 br100
-              />
+              />*/}
               <Text flex>en stock {item.stock}</Text>
             </View>
             <View style={{ width: "20%" }} center>
@@ -154,7 +172,6 @@ function InventoryComponent() {
       >
         <Entypo name="add-to-list" size={30} color="white" />
       </TouchableOpacity>
-      
     </View>
   );
 }
