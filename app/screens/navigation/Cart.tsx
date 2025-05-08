@@ -34,9 +34,9 @@ function CartComponent() {
       setCarData((prev) => [...prev,data]);
       console.log("Producto agregado:", carData);
     }
-  }, [data]);
+  }, []);
 
-  if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
+  //  if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
 
   if (error) {
     console.log("ERROR : : :", error);
@@ -77,7 +77,7 @@ function CartComponent() {
   
       <ScrollView style={{ width: "100%", paddingHorizontal: 10 }}>
         <FlatList
-          data={carData}
+          data={carData }
           renderItem={({ item }) => (
             <View bg-white marginV-5 padding-10 row br30 center>
               <Text flex text50>

@@ -11,7 +11,7 @@ export interface Products {
 
   export const dataApi = createApi({
     reducerPath: 'dataApi',
-    baseQuery: fetchBaseQuery({ baseUrl:'http://192.168.105.212:8080',prepareHeaders:async(headers,{endpoint})=>{
+    baseQuery: fetchBaseQuery({ baseUrl:'https://0da7-2806-2f0-a320-f5bd-695a-fba3-62ba-687b.ngrok-free.app',prepareHeaders:async(headers,{endpoint})=>{
       if(endpoint !== 'loginUser'){
         const token = await AsyncStorage.getItem('accessToken');
         console.log('ENDPOINT :',endpoint)

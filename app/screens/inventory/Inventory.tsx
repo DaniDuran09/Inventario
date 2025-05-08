@@ -26,7 +26,12 @@ function InventoryComponent() {
   const navigation = useNavigation();
 
   const { data, error, isLoading } = useGetAllProductsQuery();
-  /*const { data  } = useGetProductByCodeQuery(product,{skip:!product})
+  //const {  data, error, isLoading  } = useGetProductByCodeQuery(product,{skip:!product})
+
+  useEffect(()=>{
+    console.log('DATA',data)
+  },[data])
+  /*
 
   useEffect(()=>{
     
@@ -109,7 +114,7 @@ function InventoryComponent() {
             <Text text70>Comienza a agregar productos </Text>
           </View>
         }
-        data={data2}
+        data={data}
         renderItem={({ item }) => (
           <View
             style={{ width: "95%", height: 80 }}
