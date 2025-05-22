@@ -23,6 +23,7 @@ function LoginComponent() {
 
   const [loginUser, { data, error, isLoading }] = useLoginUserMutation();
 
+
   const handleLogin = async () => {
     if (userName == "" || password == "") {
       ToastAndroid.showWithGravity(
@@ -40,7 +41,7 @@ function LoginComponent() {
         const { accessToken } = result;
         console.log(accessToken);
         await AsyncStorage.setItem("accessToken", accessToken);
-        navigation.navigate("tabNab");
+        navigation.replace("tabNab");
       } catch (err) {
         console.log(err);
       }

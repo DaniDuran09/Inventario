@@ -8,11 +8,20 @@ export interface Products {
   price:number,	
   stock:number,
 }
+export interface UserInfo {
+  id: number,
+  firstName: string,
+  lastName: string,
+  username: string
+
+}
+//documentaciòn 
+//http://localhost:8080/api/swagger-ui/index.html#/
 
   export const dataApi = createApi({
     reducerPath: 'dataApi',
-    baseQuery: fetchBaseQuery({ baseUrl:'https://0da7-2806-2f0-a320-f5bd-695a-fba3-62ba-687b.ngrok-free.app',prepareHeaders:async(headers,{endpoint})=>{
-      if(endpoint !== 'loginUser'){
+    baseQuery: fetchBaseQuery({ baseUrl:'http://192.168.0.43:8080',prepareHeaders:async(headers,{endpoint})=>{
+      if(endpoint !== 'loginUser'  ){
         const token = await AsyncStorage.getItem('accessToken');
         console.log('ENDPOINT :',endpoint)
         if(token){
@@ -31,6 +40,9 @@ export interface Products {
         query: () => "/api/v1/me/products",
         
       }),
+      getUserInfo:build.query<UserInfo[],void>({
+        query: () => "/api/v1/managers/me?detail=2",
+       }),
       loginUser:build.mutation<{accessToken:string},{username:string;password:string}>({
         query:(credentials)=>({
           url:`/api/v1/auth/login`,
@@ -38,8 +50,29 @@ export interface Products {
           headers:{'Content-Type': 'application/json'},
           body:credentials, 
         })
-      })  
+      }),
+
+
+      /*createUser:build.mutation<void,{
+        firstName: string;
+        lastName: string;
+        username: string;
+        password: string;
+        email: string;
+        phone: {
+          countryCode: string;
+          areaCode: string;
+          subscriberNumber: string;
+        };
+        countryCode: string;
+      }>({
+        query:(newUser)=>({
+          url:`/api/v1/managers`,
+          method:'POST',
+          body:newUser,
+        })
+      })*/
     }),
   })
 
-export const { useGetAllProductsQuery , useGetProductByCodeQuery , useLoginUserMutation} = dataApi
+export const { useGetAllProductsQuery , useGetProductByCodeQuery , useLoginUserMutation , useGetUserInfoQuery } = dataApi

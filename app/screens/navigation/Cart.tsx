@@ -1,40 +1,62 @@
-import { Colors, Icon, Text, View } from "react-native-ui-lib";
+import { Text, View } from "react-native-ui-lib";
 import { CameraView } from "expo-camera";
 import {
-  ActivityIndicator,
+  Alert,
   FlatList,
   Linking,
   ScrollView,
-  StyleSheet,
+  ToastAndroid,
   TouchableOpacity,
 } from "react-native";
 import { useEffect, useState } from "react";
 import useCamera from "@/hooks/UseCamera";
-import { Products, useGetAllProductsQuery,useGetProductByCodeQuery } from "../../functions/services";
+import {
+  Products,
+  useGetProductByCodeQuery,
+} from "../../functions/services";
 import { Provider } from "react-redux";
 import { store } from "@/configureStore";
-import { Dimensions } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Dimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+/*
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
-
-
+*/
 function CartComponent() {
   const { permission: cameraPermissions } = useCamera();
   const [carData, setCarData] = useState<Products[]>([]);
   const [qrCode, setQrCode] = useState<string>("");
   const [lastScanned, setLastScanned] = useState<string | null>(null);
 
-  const { data, error, isLoading } = useGetProductByCodeQuery(qrCode, { skip: !qrCode });
+  const { data, error, isLoading } = useGetProductByCodeQuery(qrCode, {
+    skip: !qrCode,
+  });
 
   useEffect(() => {
-    console.log('data : cardata',carData)
+    console.log("data : cardata", carData);
     if (data) {
-      setCarData((prev) => [...prev,data]);
+      setCarData((prev) => [...prev, data]);
       console.log("Producto agregado:", carData);
     }
-  }, []);
+  }, [data]);
+
+  const handleSubmit = () => {
+    !carData
+      ? Alert.alert("CONFIRMAR", "HOLA", [
+          {
+            text: "Cancelar",
+            style: "cancel",
+          },
+          {
+            text: "Confirmar",
+          },
+        ])
+      : ToastAndroid.showWithGravity(
+          "NO HAY PRODUCTOS EN EL CARRITO",
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+  };
 
   //  if (isLoading) return <ActivityIndicator size="large" color={"#0000ff"} />;
 
@@ -60,7 +82,7 @@ function CartComponent() {
       <CameraView
         style={{
           width: "100%",
-          height: screenWidth < 600 ? "30%" : screenHeight * 0.5,
+          height: "35%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           overflow: "hidden",
@@ -74,10 +96,10 @@ function CartComponent() {
           }
         }}
       />
-  
+
       <ScrollView style={{ width: "100%", paddingHorizontal: 10 }}>
         <FlatList
-          data={carData }
+          data={carData}
           renderItem={({ item }) => (
             <View bg-white marginV-5 padding-10 row br30 center>
               <Text flex text50>
@@ -98,7 +120,7 @@ function CartComponent() {
           keyExtractor={(item) => item.qr}
         />
       </ScrollView>
-  
+
       <TouchableOpacity
         style={{
           position: "absolute",
@@ -116,8 +138,9 @@ function CartComponent() {
           shadowRadius: 4,
           elevation: 5,
         }}
+        onPress={() => handleSubmit()}
       >
-        <Text text40 white>+</Text>
+        <Ionicons name="cash-outline" size={30} color={"white"} />
       </TouchableOpacity>
     </View>
   );

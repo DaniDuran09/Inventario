@@ -17,12 +17,12 @@ export default function Index() {
   return (
     <Stack.Navigator initialRouteName="login">
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: false }}
         name="login"
         component={Login}
       />
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false , gestureEnabled: false}}
         name="tabNab"
         component={TabNab}
       />

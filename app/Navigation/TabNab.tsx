@@ -13,9 +13,9 @@ export default function TabNab() {
     <Tab.Navigator initialRouteName="scanner" screenOptions={{
       tabBarStyle: {
         borderColor:'black',
-        borderWidth:1,
+        //borderWidth:2,
         backgroundColor: Colors.white,
-        height:'7%',
+        //height:'7%',
         paddingTop:10,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: -2 },

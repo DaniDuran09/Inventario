@@ -4,9 +4,10 @@ import {
   ActivityIndicator,
   Dimensions,
   FlatList,
+  Modal,
   TouchableOpacity,
 } from "react-native";
-import { Colors, Modal, Text, View } from "react-native-ui-lib";
+import { Colors, Text, View } from "react-native-ui-lib";
 import { Provider } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import LottieView from "lottie-react-native";
@@ -14,6 +15,8 @@ import { Entypo, Octicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { TextInput } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Product from "@/assets/components/Product";
 
 function InventoryComponent() {
   const [modal, setModal] = useState(false);
@@ -23,7 +26,7 @@ function InventoryComponent() {
   const heightScreen = Dimensions.get("window").height;
   const widthScreen = Dimensions.get("window").width;
 
-  const navigation = useNavigation();
+  const closeModal = () => setModal(false)
 
   const { data, error, isLoading } = useGetAllProductsQuery();
   //const {  data, error, isLoading  } = useGetProductByCodeQuery(product,{skip:!product})
@@ -31,13 +34,44 @@ function InventoryComponent() {
   useEffect(()=>{
     console.log('DATA',data)
   },[data])
-  /*
+  
+  
+  async function agregarTienda() {
+  const token = await AsyncStorage.getItem('accessToken');
+  const url = 'http://192.168.0.43:8080/api/v1/me/products'; 
 
+  console.log(token)
+    const datos = {
+    barcode: '1234567891011',
+    storeId: 1,
+    name: 'tijeras',
+    description: 'tijeras para cortar',
+    price: 30,
+    stock: 10,
+    category: "gmelWSwOhlshP 0mrYun7tDlFlmww"
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(datos)
+    });
+
+    const resultado = await res.json();
+    console.log('Tienda creada:', resultado);
+  } catch (err) {
+    console.log('Error al crear tienda:', err);
+  }
+}
+//agregarTienda();
+  /*
   useEffect(()=>{
-    
   },[search])
-*/
-  /*const data2 = [
+  const data2 = [
     { name: "Hola1", price: 5, stock: 5, color: "green" },
     { name: "Hola2", price: 5, stock: 5, color: "yellow" },
     { name: "Hola3", price: 5, stock: 5, color: "red" },
@@ -177,6 +211,11 @@ function InventoryComponent() {
       >
         <Entypo name="add-to-list" size={30} color="white" />
       </TouchableOpacity>
+      <Modal 
+        visible={modal}
+      >
+        <Product closeModal={closeModal} type="AGREGAR PRODUCTO" />
+      </Modal>  
     </View>
   );
 }
