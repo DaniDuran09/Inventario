@@ -56,7 +56,7 @@ function LoginComponent() {
   }, []);
 
   return (
-    <View bg-blue40 padding-30 flex>
+    <View bg-blue50 padding-30 flex>
       <View center marginT-100>
         <Text white text20>
           INICIA SESIÓN

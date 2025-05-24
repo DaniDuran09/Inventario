@@ -34,7 +34,7 @@ export default function History() {
   ];
 
   return (
-    <View padding-10>
+    <View padding-10 bg-blue50 flex>
     <FlatList
       data={tickets}
       keyExtractor={(item) => item.id}

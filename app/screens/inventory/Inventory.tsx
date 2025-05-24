@@ -95,12 +95,12 @@ function InventoryComponent() {
     );
   }
   return (
-    <View flex bg-white bg-grey50>
-      <View
+    <View flex bg-white bg-blue50 paddingT-20>  
+      {/*<View
         style={{ width: "100%" }}
         bg-blue40
         paddingV-15
-        paddingH-10
+        paddingH-20
         marginB-5
       >
         <View
@@ -133,7 +133,7 @@ function InventoryComponent() {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </View>*/}
 
       <FlashList
         ListEmptyComponent={
@@ -156,7 +156,7 @@ function InventoryComponent() {
             bg-white
             row
             br50
-            marginH-10
+            marginH-20
           >
             <View flex padding-10>
               <View flex centerV>

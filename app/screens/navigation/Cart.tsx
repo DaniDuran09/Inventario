@@ -105,7 +105,7 @@ function CartComponent() {
               <Text flex text50>
                 {item.name}
               </Text>
-              <Text flex text60 blue40>
+              <Text flex text60 blue50>
                 ${item.price}
               </Text>
               <TouchableOpacity style={{ paddingHorizontal: 10 }}>
