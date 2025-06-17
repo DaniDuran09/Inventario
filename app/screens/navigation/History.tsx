@@ -1,42 +1,15 @@
+import { useGetCartsQuery } from "@/app/functions/services";
 import { FlatList } from "react-native";
 import { Colors, Text, View } from "react-native-ui-lib";
 
 export default function History() {
-  const tickets = [
-    {
-      id: "1",
-      fecha: "2025-04-10",
-      productos: [
-        { nombre: "Cuaderno A4", cantidad: 2, precio: 3.5 },
-        { nombre: "Bolígrafo Azul", cantidad: 5, precio: 0.8 },
-      ],
-      total: 3.5 * 2 + 0.8 * 5,
-    },
-    {
-      id: "2",
-      fecha: "2025-04-09",
-      productos: [
-        { nombre: "Cartulina Blanca", cantidad: 10, precio: 0.6 },
-        { nombre: "Tijeras Escolares", cantidad: 1, precio: 2.9 },
-        { nombre: "Pritt Pequeño", cantidad: 3, precio: 1.2 },
-      ],
-      total: 0.6 * 10 + 2.9 + 1.2 * 3,
-    },
-    {
-      id: "3",
-      fecha: "2025-04-08",
-      productos: [
-        { nombre: "Lápiz HB", cantidad: 4, precio: 0.5 },
-        { nombre: "Cuaderno de Dibujo", cantidad: 1, precio: 4.0 },
-      ],
-      total: 0.5 * 4 + 4.0,
-    },
-  ];
+ 
+  const { data, error, isLoading } = useGetCartsQuery();
 
   return (
     <View padding-10 bg-blue50 flex>
     <FlatList
-      data={tickets}
+      data={[]}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <View

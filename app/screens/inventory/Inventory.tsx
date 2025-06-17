@@ -5,6 +5,7 @@ import {
   Dimensions,
   FlatList,
   Modal,
+  RefreshControl,
   TouchableOpacity,
 } from "react-native";
 import { Colors, Text, View } from "react-native-ui-lib";
@@ -20,25 +21,40 @@ import Product from "@/assets/components/Product";
 
 function InventoryComponent() {
   const [modal, setModal] = useState(false);
-  const [product, setProduct] = useState(''); 
-  const [search , setSearch] = useState(false)
-
+  //const [product, setProduct] = useState(''); 
+  //const [search , setSearch] = useState(false)
+  const [refreshing , setRefreshing] = useState(false);
+  const [type , setType] = useState(" ");
   const heightScreen = Dimensions.get("window").height;
   const widthScreen = Dimensions.get("window").width;
+  const [codeProps, setCodeProps] = useState(" ");
 
   const closeModal = () => setModal(false)
 
-  const { data, error, isLoading } = useGetAllProductsQuery();
+  const { data, error, isLoading , refetch } = useGetAllProductsQuery();
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }
+  useEffect(()=>{
+    onRefresh()
+  },[modal])
   //const {  data, error, isLoading  } = useGetProductByCodeQuery(product,{skip:!product})
 
   useEffect(()=>{
     console.log('DATA',data)
   },[data])
+
+  useEffect(() => {
+    console.log("codeProps", codeProps);
+  }, [codeProps]);
   
   
   async function agregarTienda() {
   const token = await AsyncStorage.getItem('accessToken');
-  const url = 'http://192.168.0.43:8080/api/v1/me/products'; 
+  const url = 'http://192.168.0.43/api/v1/me/products'; 
 
   console.log(token)
     const datos = {
@@ -95,7 +111,7 @@ function InventoryComponent() {
     );
   }
   return (
-    <View flex bg-white bg-blue50 paddingT-20>  
+    <View flex bg-white bg-blue50 paddingT-20 paddingH-20>  
       {/*<View
         style={{ width: "100%" }}
         bg-blue40
@@ -136,6 +152,7 @@ function InventoryComponent() {
       </View>*/}
 
       <FlashList
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={
           <View center width={widthScreen} height={heightScreen / 1.3}>
             <LottieView
@@ -151,12 +168,11 @@ function InventoryComponent() {
         data={data}
         renderItem={({ item }) => (
           <View
-            style={{ width: "95%", height: 80 }}
+            style={{ width: "100%", height: 80 }}
             marginV-5
             bg-white
             row
             br50
-            marginH-20
           >
             <View flex padding-10>
               <View flex centerV>
@@ -176,19 +192,28 @@ function InventoryComponent() {
                 height={50}
                 br100
               />*/}
-              <Text flex>en stock {item.stock}</Text>
+              <Text text60 style={{color:item.stock>=10?'green':item.stock>=1?'orange':'yellow'}} flex>en stock {item.stock}</Text>
             </View>
-            <View style={{ width: "20%" }} center>
+            <View style={{ width: "20%" , height:"100%" }} center>
               <TouchableOpacity
                 style={{
                   width: "100%",
+                  height: "80%",
+                  borderRadius: 10,
                   justifyContent: "center",
                   alignItems: "center",
                   marginRight: 20,
+                  backgroundColor: Colors.blue40,
+                }}
+                onPress={() => {
+                  setModal(true);
+                  setType("EDITAR PRODUCTO");
+                  setCodeProps(item.barcode);
+                  //setProduct(item.barcode);
                 }}
               >
                 <Text text60 white>
-                  . . .
+                  EDITAR
                 </Text>
               </TouchableOpacity>
             </View>
@@ -207,14 +232,18 @@ function InventoryComponent() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        onPress={() => setModal(true)}
+        onPress={() => {
+          setModal(true) 
+          setType("AGREGAR PRODUCTO")
+        }
+        }
       >
         <Entypo name="add-to-list" size={30} color="white" />
       </TouchableOpacity>
       <Modal 
         visible={modal}
       >
-        <Product closeModal={closeModal} type="AGREGAR PRODUCTO" />
+        <Product closeModal={closeModal} type={type} codeProps={codeProps}/>
       </Modal>  
     </View>
   );
