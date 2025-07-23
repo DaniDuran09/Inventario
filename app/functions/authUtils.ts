@@ -1,44 +1,27 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { API_URL } from "./services";
-
-export const checkTokenAndRedirect = async (
-  navigation: any,
-  redirectTo: string
-): Promise<boolean> => {
-  const accessToken = await AsyncStorage.getItem("accessToken");
-
-  if (!accessToken) {
-    navigation.replace("Login");
-    return false;
-  }
-
-  try {
+export const checkTokenAndRedirect = async (accessToken: string | null): Promise<boolean> => {
+  console.log("si entra");
+  //if (!accessToken) return false;
     const decoded: { exp: number } = jwtDecode(accessToken);
     const isExpired = decoded.exp * 1000 < Date.now();
-
+    console.log(isExpired ,"isExpired");
+  try {
     if (!isExpired) {
-      try {
-        const response = await fetch(`${API_URL}/api/v1/me/products`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+      const response = await fetch(`${API_URL}/api/v1/me/products`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
 
-        if (response.status !== 401) {
-          navigation.replace(redirectTo);
-          return true;
-        }
-      } catch (err) {
-        console.log("Network error:", err);
+      if (response.status !== 401) {
+        return true; // token válido
       }
-    } else {
-      console.log("Token has expired");
     }
-  } catch (error) {
-    console.log("Invalid token:", error);
+  } catch (err) {
+    console.log("Error verificando token:", err);
   }
 
   await AsyncStorage.removeItem("accessToken");
-  navigation.replace("Login");
   return false;
 };
 

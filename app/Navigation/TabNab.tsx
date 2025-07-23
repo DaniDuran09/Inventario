@@ -16,24 +16,29 @@ export default function TabNab() {
         //borderWidth:2,
         backgroundColor: Colors.white,
         //height:'7%',
-        paddingTop:10,
+        paddingTop:0,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
+        height: 120,
       },
     }}    >
-      <Tab.Screen
-        name="scanner"
-        component={Cart}
-        options={{
-          headerShown: false,
-          title: "CARRITO",
-          tabBarIcon: ({color})=> <FontAwesome  name="shopping-cart" color={color} size={30} />,
-          tabBarActiveTintColor: Colors.blue40,
-          tabBarInactiveTintColor:Colors.grey10
-        }}
-      />
+     <Tab.Screen
+  name="scanner"
+  component={Cart}
+  options={{
+    headerShown: false,
+    title: "CARRITO",
+    unmountOnBlur: true,
+    tabBarIcon: ({ color }) => (
+      <FontAwesome name="shopping-cart" color={color} size={30} />
+    ),
+    tabBarActiveTintColor: Colors.blue40,
+    tabBarInactiveTintColor: Colors.grey10,
+  }}
+/>
+
       <Tab.Screen
         name="Historial"
         component={History}

@@ -15,7 +15,8 @@ export interface UserInfo {
   username: string;
 }
 
-export const API_URL = "http://192.168.0.43:8080";
+export const API_URL = "https://pos-app.duckdns.org";
+//34.237.253.24
 //documentaciòn
 //http://localhost:8080/api/swagger-ui/index.html#/
 
@@ -42,12 +43,17 @@ export const dataApi = createApi({
     getAllProducts: build.query<Products[], void>({
       query: () => "/api/v1/me/products",
     }),
+    deleteProduct:build.mutation<void,string>({
+      query:(barcode)=>({
+        url:`/api/v1/me/products/${barcode}`,
+        method:'DELETE',
+      })
+    }),
     getUserInfo: build.query<UserInfo[], void>({
-      query: () => "/api/v1/managers/me?detail=2",
+      query: () => "/api/v1/users/me",
     }),
     getCarts: build.query({
-      query: () => `/api/v1/me/carts`,
-        headers: { "Content-Type": "application/json" },
+      query: () => `/api/v1/me/carts`
     }),
 
     loginUser: build.mutation<
@@ -79,7 +85,7 @@ export const dataApi = createApi({
         description: string;
         price: number;
         stock: number;
-        category: string;
+        category: any;
       }
     >({
       query: (newProduct) => ({
@@ -138,4 +144,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useCreateCartMutation,
+  useDeleteProductMutation,
 } = dataApi;

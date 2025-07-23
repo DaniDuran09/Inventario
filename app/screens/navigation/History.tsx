@@ -1,39 +1,77 @@
 import { useGetCartsQuery } from "@/app/functions/services";
+import { store } from "@/configureStore";
+import { useEffect, useState } from "react";
+import { RefreshControl } from "react-native";
 import { FlatList } from "react-native";
 import { Colors, Text, View } from "react-native-ui-lib";
+import { Provider } from "react-redux";
 
-export default function History() {
- 
-  const { data, error, isLoading } = useGetCartsQuery();
+function HistoryComponent() {
+  const { data, error, isLoading,refetch } = useGetCartsQuery();
+    const [refreshing , setRefreshing] = useState(false);
+
+  useEffect(() => {
+    console.log("son los carritos bro", data);
+  }, [data]);
+
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toLocaleString();
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }
 
   return (
-    <View padding-10 bg-blue50 flex>
-    <FlatList
-      data={[]}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <View
-          style={{
-            padding: 10,
-            marginBottom: 10,
-            backgroundColor: Colors.white,
-            borderRadius: 10,
-          }}
-        >
-          <Text text60>{item.fecha}</Text>
-          <Text style={{ marginTop: 5 }}>Productos:</Text>
-          {item.productos.map((prod, index) => (
-            <Text key={index}>
-              - {prod.nombre} x{prod.cantidad} ${prod.precio.toFixed(2)}
+    <View padding-10 bg-blue50 flex paddingT-30>
+      <FlatList
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        data={data || []}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={<Text>No hay carritos todavía.</Text>}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              padding: 15,
+              marginBottom: 12,
+              backgroundColor: Colors.white,
+              borderRadius: 12,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 3,
+            }}
+          >
+            <Text text60M>ID: #{item.id}</Text>
+            <Text grey20>Fecha: {formatDate(item.createdOn)}</Text>
+            <Text grey20>
+              Empleado: {item.employee.firstName} {item.employee.lastName}
             </Text>
-          ))}
-          <Text text70>
-            Total: ${item.total.toFixed(2)}
-          </Text>
-        </View>
-      )}
-    />
-
+            <Text
+              style={{
+                color: item.state === "COMPLETED" ? "green" : "red",
+                marginVertical: 4,
+              }}
+            >
+              Estado: {item.state}
+            </Text>
+            <Text text70M>Total: ${item.total.toFixed(2)}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
+
+export default function Settings() {
+  return (
+    <Provider store={store}>
+      <HistoryComponent />
+    </Provider>
+  );
+}
+
